@@ -1,0 +1,386 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\DSMGA2\chromosome.cpp" />
+    <ClCompile Include="..\P3\Evaluation.cpp" />
+    <ClCompile Include="ActivePopulationStrategy.cpp" />
+    <ClCompile Include="BestMigrationSelection.cpp" />
+    <ClCompile Include="BinaryCoding.cpp" />
+    <ClCompile Include="BinaryEvaluation.cpp" />
+    <ClCompile Include="BinaryGeneration.cpp" />
+    <ClCompile Include="BinaryDifferentialLinkage.cpp" />
+    <ClCompile Include="BinaryNegationMutation.cpp" />
+    <ClCompile Include="BinaryOnePointCrossover.cpp" />
+    <ClCompile Include="BinaryOptimizer.cpp" />
+    <ClCompile Include="BinaryTwoPointsCrossover.cpp" />
+    <ClCompile Include="BinaryUniformCrossover.cpp" />
+    <ClCompile Include="ChangeDetector.cpp" />
+    <ClCompile Include="ClassicPopulationStrategy.cpp" />
+    <ClCompile Include="Cluster.cpp" />
+    <ClCompile Include="Clustering.cpp" />
+    <ClCompile Include="CommandExecution.cpp" />
+    <ClCompile Include="CommandParam.cpp" />
+    <ClCompile Include="CommandParamParser.cpp" />
+    <ClCompile Include="ComplexCommandParam.cpp" />
+    <ClCompile Include="Crossover.cpp" />
+    <ClCompile Include="CrossoverUtils.cpp" />
+    <ClCompile Include="CompProblem.cpp" />
+    <ClCompile Include="DifferentialEvolution.cpp" />
+    <ClCompile Include="DoublePopulationStrategy.cpp" />
+    <ClCompile Include="DSMGA2.cpp" />
+    <ClCompile Include="DummyOptimizer.cpp" />
+    <ClCompile Include="DynamicDSMGA2.cpp" />
+    <ClCompile Include="DynamicFromStaticOptimizer.cpp" />
+    <ClCompile Include="DynamicLTGA.cpp" />
+    <ClCompile Include="DynamicOptimizer.cpp" />
+    <ClCompile Include="DynamicP3.cpp" />
+    <ClCompile Include="EnumCommandParam.cpp" />
+    <ClCompile Include="Error.cpp" />
+    <ClCompile Include="Evaluation.cpp" />
+    <ClCompile Include="EvaluationUtils.cpp" />
+    <ClCompile Include="FiberNet.cpp" />
+    <ClCompile Include="FloatCommandParam.cpp" />
+    <ClCompile Include="FloatVectorCommandParam.cpp" />
+    <ClCompile Include="GenePattern.cpp" />
+    <ClCompile Include="GenePatternList.cpp" />
+    <ClCompile Include="GenePatternReplacement.cpp" />
+    <ClCompile Include="GenePatternReplacementUtils.cpp" />
+    <ClCompile Include="GenePatternSelection.cpp" />
+    <ClCompile Include="Generation.cpp" />
+    <ClCompile Include="GenerationUtils.cpp" />
+    <ClCompile Include="GeneticAlgorithm.cpp" />
+    <ClCompile Include="IncrementalOptimizer.cpp" />
+    <ClCompile Include="IncrementalP3.cpp" />
+    <ClCompile Include="Individual.cpp" />
+    <ClCompile Include="InertiaWeight.cpp" />
+    <ClCompile Include="IOUtils.cpp" />
+    <ClCompile Include="IslandCoevolutionDSMGA2.cpp" />
+    <ClCompile Include="IslandModelGeneticAlgorithm.cpp" />
+    <ClCompile Include="IslandModelOptimizer.cpp" />
+    <ClCompile Include="IslandModelP3.cpp" />
+    <ClCompile Include="KMeansClustering.cpp" />
+    <ClCompile Include="Linkage.cpp" />
+    <ClCompile Include="LinkageUtils.cpp" />
+    <ClCompile Include="Log.cpp" />
+    <ClCompile Include="LTGA.cpp" />
+    <ClCompile Include="Main.cpp" />
+    <ClCompile Include="MathUtils.cpp" />
+    <ClCompile Include="MigrationReplacement.cpp" />
+    <ClCompile Include="MigrationReplacementUtils.cpp" />
+    <ClCompile Include="MigrationSelection.cpp" />
+    <ClCompile Include="MigrationSelectionUtils.cpp" />
+    <ClCompile Include="MigrationTopology.cpp" />
+    <ClCompile Include="MigrationTopologyUtils.cpp" />
+    <ClCompile Include="MultiDifferentOptimizer.cpp" />
+    <ClCompile Include="MultiDifferentWithGlobalP3.cpp" />
+    <ClCompile Include="MultiOptimizer.cpp" />
+    <ClCompile Include="MultiPopulationGeneticAlgorithm.cpp" />
+    <ClCompile Include="Mutation.cpp" />
+    <ClCompile Include="MutationUtils.cpp" />
+    <ClCompile Include="OptimizationCommand.cpp" />
+    <ClCompile Include="Optimizer.cpp" />
+    <ClCompile Include="OptimizerUtils.cpp" />
+    <ClCompile Include="P3.cpp" />
+    <ClCompile Include="P3BasedOptimizer.cpp" />
+    <ClCompile Include="ParticleSwarmOptimization.cpp" />
+    <ClCompile Include="PopulationOptimizer.cpp" />
+    <ClCompile Include="PopulationStrategy.cpp" />
+    <ClCompile Include="PopulationStrategyUtils.cpp" />
+    <ClCompile Include="Problem.cpp" />
+    <ClCompile Include="RandomMigrationReplacement.cpp" />
+    <ClCompile Include="RandomMigrationSelection.cpp" />
+    <ClCompile Include="RandUtils.cpp" />
+    <ClCompile Include="Real11StrategyOptimizer.cpp" />
+    <ClCompile Include="RealCoding.cpp" />
+    <ClCompile Include="RealCrossover.cpp" />
+    <ClCompile Include="RealGeneration.cpp" />
+    <ClCompile Include="RealMutation.cpp" />
+    <ClCompile Include="RealRandomGeneration.cpp" />
+    <ClCompile Include="Selection.cpp" />
+    <ClCompile Include="SelectionUtils.cpp" />
+    <ClCompile Include="SensorChangeDetector.cpp" />
+    <ClCompile Include="SinglePopulationStrategy.cpp" />
+    <ClCompile Include="StopCondition.cpp" />
+    <ClCompile Include="RunningTimeStopCondition.cpp" />
+    <ClCompile Include="StopConditionUtils.cpp" />
+    <ClCompile Include="StringCommandParam.cpp" />
+    <ClCompile Include="StringUtils.cpp" />
+    <ClCompile Include="System.cpp" />
+    <ClCompile Include="Transformation.cpp" />
+    <ClCompile Include="UIntCommandParam.cpp" />
+    <ClCompile Include="UIntVectorCommandParam.cpp" />
+    <ClCompile Include="util\timer.cpp" />
+    <ClCompile Include="util\tools.cpp" />
+    <ClCompile Include="WorstMigrationReplacement.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\DSMGA2\chromosome.h" />
+    <ClInclude Include="..\P3\Evaluation.h" />
+    <ClInclude Include="ActivePopulationStrategy.h" />
+    <ClInclude Include="BestMigrationSelection.h" />
+    <ClInclude Include="BinaryCoding.h" />
+    <ClInclude Include="BinaryEvaluation.h" />
+    <ClInclude Include="BinaryGeneration.h" />
+    <ClInclude Include="BinaryDifferentialLinkage.h" />
+    <ClInclude Include="BinaryNegationMutation.h" />
+    <ClInclude Include="BinaryOnePointCrossover.h" />
+    <ClInclude Include="BinaryOptimizer.h" />
+    <ClInclude Include="BinaryTwoPointsCrossover.h" />
+    <ClInclude Include="BinaryUniformCrossover.h" />
+    <ClInclude Include="ChangeDetector.h" />
+    <ClInclude Include="ClassicPopulationStrategy.h" />
+    <ClInclude Include="Cluster.h" />
+    <ClInclude Include="Clustering.h" />
+    <ClInclude Include="CommandExecution.h" />
+    <ClInclude Include="CommandParam.h" />
+    <ClInclude Include="CommandParamParser.h" />
+    <ClInclude Include="ComplexCommandParam.h" />
+    <ClInclude Include="Crossover.h" />
+    <ClInclude Include="CrossoverUtils.h" />
+    <ClInclude Include="CompProblem.h" />
+    <ClInclude Include="DifferentialEvolution.h" />
+    <ClInclude Include="DoublePopulationStrategy.h" />
+    <ClInclude Include="DSMGA2.h" />
+    <ClInclude Include="DummyOptimizer.h" />
+    <ClInclude Include="DynamicDSMGA2.h" />
+    <ClInclude Include="DynamicFromStaticOptimizer.h" />
+    <ClInclude Include="DynamicLTGA.h" />
+    <ClInclude Include="DynamicOptimizer.h" />
+    <ClInclude Include="DynamicP3.h" />
+    <ClInclude Include="EnumCommandParam.h" />
+    <ClInclude Include="Error.h" />
+    <ClInclude Include="Evaluation.h" />
+    <ClInclude Include="EvaluationUtils.h" />
+    <ClInclude Include="FiberNet.h" />
+    <ClInclude Include="FloatCommandParam.h" />
+    <ClInclude Include="FloatVectorCommandParam.h" />
+    <ClInclude Include="GenePattern.h" />
+    <ClInclude Include="GenePatternList.h" />
+    <ClInclude Include="GenePatternReplacement.h" />
+    <ClInclude Include="GenePatternReplacementUtils.h" />
+    <ClInclude Include="GenePatternSelection.h" />
+    <ClInclude Include="Generation.h" />
+    <ClInclude Include="GenerationUtils.h" />
+    <ClInclude Include="GeneticAlgorithm.h" />
+    <ClInclude Include="IncrementalOptimizer.h" />
+    <ClInclude Include="IncrementalP3.h" />
+    <ClInclude Include="Individual.h" />
+    <ClInclude Include="InertiaWeight.h" />
+    <ClInclude Include="IOUtils.h" />
+    <ClInclude Include="IslandCoevolutionDSMGA2.h" />
+    <ClInclude Include="IslandModelGeneticAlgorithm.h" />
+    <ClInclude Include="IslandModelOptimizer.h" />
+    <ClInclude Include="IslandModelP3.h" />
+    <ClInclude Include="KMeansClustering.h" />
+    <ClInclude Include="Linkage.h" />
+    <ClInclude Include="LinkageUtils.h" />
+    <ClInclude Include="Log.h" />
+    <ClInclude Include="LTGA.h" />
+    <ClInclude Include="MathUtils.h" />
+    <ClInclude Include="MigrationReplacement.h" />
+    <ClInclude Include="MigrationReplacementUtils.h" />
+    <ClInclude Include="MigrationSelection.h" />
+    <ClInclude Include="MigrationSelectionUtils.h" />
+    <ClInclude Include="MigrationTopology.h" />
+    <ClInclude Include="MigrationTopologyUtils.h" />
+    <ClInclude Include="MultiDifferentOptimizer.h" />
+    <ClInclude Include="MultiDifferentWithGlobalP3.h" />
+    <ClInclude Include="MultiOptimizer.h" />
+    <ClInclude Include="MultiPopulationGeneticAlgorithm.h" />
+    <ClInclude Include="Mutation.h" />
+    <ClInclude Include="MutationUtils.h" />
+    <ClInclude Include="OptimizationCommand.h" />
+    <ClInclude Include="Optimizer.h" />
+    <ClInclude Include="OptimizerUtils.h" />
+    <ClInclude Include="P3.h" />
+    <ClInclude Include="P3BasedOptimizer.h" />
+    <ClInclude Include="ParticleSwarmOptimization.h" />
+    <ClInclude Include="PointerUtils.h" />
+    <ClInclude Include="PopulationOptimizer.h" />
+    <ClInclude Include="PopulationStrategy.h" />
+    <ClInclude Include="PopulationStrategyUtils.h" />
+    <ClInclude Include="Problem.h" />
+    <ClInclude Include="RandomMigrationReplacement.h" />
+    <ClInclude Include="RandomMigrationSelection.h" />
+    <ClInclude Include="RandUtils.h" />
+    <ClInclude Include="Real11StrategyOptimizer.h" />
+    <ClInclude Include="RealCoding.h" />
+    <ClInclude Include="RealCrossover.h" />
+    <ClInclude Include="RealGeneration.h" />
+    <ClInclude Include="RealMutation.h" />
+    <ClInclude Include="RealRandomGeneration.h" />
+    <ClInclude Include="Selection.h" />
+    <ClInclude Include="SelectionUtils.h" />
+    <ClInclude Include="SensorChangeDetector.h" />
+    <ClInclude Include="SinglePopulationStrategy.h" />
+    <ClInclude Include="StopCondition.h" />
+    <ClInclude Include="RunningTimeStopCondition.h" />
+    <ClInclude Include="StopConditionUtils.h" />
+    <ClInclude Include="StringCommandParam.h" />
+    <ClInclude Include="StringUtils.h" />
+    <ClInclude Include="System.h" />
+    <ClInclude Include="Transformation.h" />
+    <ClInclude Include="UIntCommandParam.h" />
+    <ClInclude Include="UIntVectorCommandParam.h" />
+    <ClInclude Include="util\timer.h" />
+    <ClInclude Include="util\tools.h" />
+    <ClInclude Include="WorstMigrationReplacement.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DSMGA2\DSMGA2.vcxproj">
+      <Project>{63920510-558d-436c-9966-ffb51847db7c}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\P3\P3.vcxproj">
+      <Project>{c296cf9e-2430-432b-9621-1c5e92447298}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\SHADE\SHADE.vcxproj">
+      <Project>{e6018031-61d3-49ae-8564-6326383059ed}</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{9ABECBC0-14A3-4C1D-A9AA-CA3BE1FCA800}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>IslandGA</RootNamespace>
+    <ProjectName>IslandGA</ProjectName>
+    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+    <OutDir>$(SolutionDir)..\$(Configuration)\</OutDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <LinkIncremental>true</LinkIncremental>
+    <OutDir>$(SolutionDir)..\$(Configuration)\</OutDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

@@ -1,0 +1,16 @@
+D:\studia\doktoranckie\publikacje\C X Gecco fitness chaching\badania\zz_simple_examples\program\IslandGA_ffe2.exe\\PROGRAM
+D:\studia\doktoranckie\publikacje\C X Gecco fitness chaching\badania\zz_simple_examples\00 immediate stuck\dec_16\\DIR
+z_summary_dsmga2_10.txt\\SUMMFILE
+settings_dsmga2_10.txt\\40
+z_summary_dsmga2e_10.txt\\SUMMFILE
+settings_dsmga2e_10.txt\\40
+z_summary_ltga_10.txt\\SUMMFILE
+settings_ltga_10.txt\\40
+z_summary_p3.txt\\SUMMFILE
+settings_p3.txt\\40
+
+
+
+
+
+

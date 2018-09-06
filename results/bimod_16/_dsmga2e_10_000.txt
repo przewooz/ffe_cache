@@ -1,0 +1,1 @@
+[PRW LOG] best fitness: 	 16.00000000 	 ffe: 	 13542 	 time: 	 0.0012 	 chachingFFE: 	 4171	 chachingPop: 	 0	NoFFEiter:	 0

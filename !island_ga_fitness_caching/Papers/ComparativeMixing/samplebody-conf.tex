@@ -1,0 +1,389 @@
+\section{Introduction}
+
+Intro
+
+\section{Related work}
+
+Linkage Tree Genetic Algorithm (LTGA)~\cite{ltga,ltgaOriginal} was the first method proposition that uses Dependency Structure Matrix (DSM) to discover dependencies between genes. LTGA, which is an example of population-based method, builds the linkage tree on the base of DSM using the hierarchical clustering algorithm. Nodes of the linkage tree are sets of genes indexes that are found to be dependent on one another and are used during the Optimal Mixing (OM)~\cite{om} operation. These nodes are usually called masks. During the single LTGA iteration, each individual that is a member of a population is mixed with a randomly selected individual from a population using all possible masks.
+
+Another example of evolutionary method that uses the linkage tree is Parameter-less Population Pyramid (P3)~\cite{p3,p3Add,p3Runtime}. Undoubtedly, the strength of P3 is the fact that it is a parameter-less optimizer. It means that P3 may be applied to any optimization problem without any \textit{a priori} tuning procedure. P3 is not a standard population-based method. In P3, individuals are stored in a form of pyramid, where each pyramid level is a subpopulation that contains unique individuals i.e. if one individual is a member of a specific level, it cannot be consisted of by other subpopulations. This structure resembles pyramid, because higher levels should contains better fitted individuals which ought to be much less than opposites. The P3 iteration may be divided into two steps. At the beginning of the iteration, a new individual is created on a random basis and then optimized using the local search algorithm namely First Improvement Hill Climber~\cite{p3}. During the other step of the P3 iteration, the newly created individual climbs a pyramid. While performing this operation, the individual is mixed using the OM operator with all individuals on each pyramid level taking the linkage tree assigned to a specific subpopulation into consideration. 
+
+\section{Proposed method}
+
+\subsection{Dependency Structure Matrix Genetic Algorithm-II}
+
+DSMGA-II~\cite{dsmga2} is one of the latest propositions of an evolutionary method that uses DSM to discover dependencies between genes. Since it is an example of population-based method, its general procedure is very similar to the standard Genetic Algorithm steps. Two main differences are as follows. First, the mutation and crossover operators are replaced by the (OM) operators. In DSMGA-II, the Restricted Mixing (RM) and Back Mixing (BM) operators are proposed. Both require to build the linkage model beforehand. The other difference is performing the bit-flipping greedy hill climbing (GHC) algorithm after the randomly population initialization. The general DSMGA-II is adopted from~\cite{dsmga2e} and shown in Algorithm~\ref{alg:dsmga2}.
+
+\begin{algorithm}
+	\caption{The general DSMGA-II procedure}
+	\label{alg:dsmga2}
+	\begin{algorithmic}[1]
+		\State $P: \text{population, } S: \text{selected population,}$
+		\State $s: \text{selection pressure, } R: \text{constant,}$
+		\State $DSM: \text{dependency structure matrix, } M: \text{mask}$
+		\State $\textbf{input: } l: \text{problem size, } p: \text{population size}$
+		\State $\textbf{output: } \text{best individual in } P$
+		\State $P \gets \text{PopulationInitialization($l, p$)}$
+		\State $P \gets \text{GHC($P$)}$
+		\While{$\neg \text{ShouldTerminate}$}
+			\State $S \gets \text{TournamentSelection($P, s$)}$
+			\State $DSM \gets \text{UpdateMatrix($S$)}$
+			\For {$k \gets 1 \textbf{ to } R$}
+				\State $I \gets \text{random permutation from $1$ to $p$}$
+				\For {$i \in I$}
+					\State $(P_i, M) \gets \text{RestrictedMixing($P_i$)}$
+					\If {$M \neq \emptyset$}
+						\State $P \gets \text{BackMixing($P_i, M$)}$
+					\EndIf
+				\EndFor
+			\EndFor
+		\EndWhile
+		\State $\textbf{return } \text{best inidividual in } P$
+	\end{algorithmic}
+\end{algorithm}
+
+Due to building the linkage model and utilizing it during the OM operators subsequently, DSMGA-II is capable of effectively solving many optimization problems~\cite{dsmga2, dsmga2e, fp3}. The linkage model is build on the base of DSM. DSM is a square matrix that is used by DSMGA-II to store dependencies between genes. The value of the single DSM entry $d_{i,j} \in R$ indicates how strong the $i^{th}$ and $j^{th}$ gene are dependent. The greater the value is, they are found to be less independent. The relationship between each pair of genes is measured by mutual information~\cite{mutualInformation}. Mutual information is an example of a pairwise dependency measure and is defined as follows:
+\begin{equation}
+	\label{eq:mutualInformation}
+	I(X;Y) = \sum_{x \in X} \sum_{y \in Y} p(x, y) \ln\frac{p(x,y)}{p(x)p(y)}
+\end{equation}
+where $X$ and $Y$ denote random variables. If $X$ and $Y$ are independent then the $I(X;Y)$ value is minimum. Regarding DSMGA-II, formula~(\ref{eq:mutualInformation}) 
+should consider dependencies between genes. Thus, it may be reformulated as follows:
+\begin{equation}
+	I(G_i;G_j) = \sum_{g_i \in G_i} \sum_{g_j \in G_j} p_{i,j}(g_i, g_j) \ln\frac{p_{i,j}(g_i,g_j)}{p_i(g_i)p_j(g_j)}
+\end{equation}
+where $i^{th}$ and $j^{th}$ gene are denoted by $G_i$ and $G_j$ respectively. The probability that in a whole population the $g_i$ value is assigned to the $i^{th}$ gene is indicated by $p_i(g_i)$. The value of the joint probability $p_{i,j}(g_i, g_j)$ takes into account that the $i^{th}$ gene has the $g_i$ value and the $j^{th}$ gene has the $g_j$ value simultaneously. Notice that it is possible to assign $0$ to $p_i(g_i)$, $p_j(g_j)$, or $p_{i,j}(g_i, g_j)$. Then, the value of $\ln{\frac{p_{i,j}(g_i, g_j)}{p_i(g_i)p_j(g_j)}}$ is assumed to be equal $0$ as well. DSMGA-II is mainly designed to deal with binary optimization problems, therefore, the $I(G_i,G_j)$ value can be calculated using the following formula:
+\begin{equation}
+	\begin{aligned}
+	I(G_i;G_j) &= p_{i,j}(0, 0) \ln{\frac{p_{i,j}(0, 0)}{p_i(0)p_j(0)}} + p_{i,j}(0, 1) \ln{\frac{p_{i,j}(0, 1)}{p_i(0)p_j(1)}} \\& + p_{i,j}(1, 0) \ln{\frac{p_{i,j}(1, 0)}{p_i(1)p_j(0)}}+ p_{i,j}(1, 1) \ln{\frac{p_{i,j}(1, 1)}{p_i(1)p_j(1)}}
+	\end{aligned}
+\end{equation}
+
+The main goal of constructing DSM is to apply a clustering algorithm over it. The output of clustering algorithm should be groups of genes which are highly dependent on one another. These groups are commonly called Building Blocks (BBs). DSMGA-II builds Incremental Linkage Set (ILS) to meet this objective. Because DSM may be consider as a graph, ILS is iteratively constructed by finding the Approximation Maximum-Weight Connected Subgraph (AMWCS). At the end of the ILS construction procedure (see Algorithm~\ref{alg:ILS}), ILS consists of $\left \lfloor{l/2}\right \rfloor$ masks of length from $1$ to $\left \lfloor{l/2}\right \rfloor$, where $l$ is the considered optimization problem size, whereas masks are sequences of genes indexes and are expected to be BBs. Let us consider DSM as a graph whose vertices are just all genes indexes and each pair of verticies is linked. Moreover, each edge has assigned value called linkage that is equal to mutual information. First mask in ILS is created by randomly selecting one of vertices. Second mask is constructed by adding to the end of first mask the gene index with the max linkage that has not been already chosen in the first step. Generally, the next mask in ILS is created by adding to the end of the previously constructed mask the vertex with the max linkage that has not been already added during any of the previous steps. The vertex with the max linkage is selected regarding the following formula:
+\begin{equation}
+\label{eq:maxLinkage}
+	v^* = \arg \max_{v \in V} \sum_{m \in M} I(G_v; G_m)
+\end{equation}
+where $V$ consists of vertices that are not members of any already constructed masks and $M$ is the previous mask. Let us consider DSM from Table~\ref{tab:DSM}. For instance, when the $3^{rd}$ vertex is a randomly selected gene index, the following ILS will be constructed: $<$$\{3\}, \{3, 4\}, \{3, 4, 1\}$$>$.
+\begin{table}
+	\caption{DSM to demonstrate the ILS creation procedure}
+	\label{tab:DSM}
+	\begin{tabular}{lllllll}
+		\toprule
+		\textbf{Gene index} & \textbf{1} & \textbf{2} & \textbf{3} & \textbf{4} & \textbf{5} & \textbf{6} \\
+		\midrule
+		\textbf{1} & X & 0.001 & 0.063 & 0.112 & 0.275 & 0.112 \\
+		\textbf{2} & 0.001 & X & 0.002 & 0.033 & 0.001 & 0.164 \\
+		\textbf{3} & 0.063 & 0.02 & X & 0.459 & 0.063 & 0.033 \\
+		\textbf{4} & 0.112 & 0.033 & 0.459 & X & 0.112 & 0.089 \\
+		\textbf{5} & 0.275 & 0.001 & 0.063 & 0.112 & X & 0.112 \\
+		\textbf{6} & 0.112 & 0.164 & 0.033 & 0.089 & 0.112 & X \\
+		\bottomrule
+	\end{tabular}
+\end{table} 
+
+\begin{algorithm}
+	\caption{The ILS construction procedure}
+	\label{alg:ILS}
+	\begin{algorithmic}[1]
+		\State $ILS: \text{incremental linkage set, } V: \text{candidate vertices set,}$
+		\State $M: \text{mask, } l: \text{problem size}$
+		\State $\textbf{output: } ILS: \text{incremental linkage set}$
+		\State $ILS \gets \emptyset$
+		\State $M \gets []$
+		\State $V \gets \{1, 2, ..., l\}$
+		\State $v \gets \text{a random vertice in } V$
+		\For {$i \gets 1 \textbf{ to } \left \lfloor{l/2}\right \rfloor$}
+			\State $\text{add $v$ to $M$}$
+			\State $ILS_i \gets M$
+			\State $V \gets V \setminus \{v\}$
+			\State $v^* \gets \text{the vertex in $V$ with the max linkage}$
+			\State $v \gets v^*$
+		\EndFor
+	\end{algorithmic}
+\end{algorithm}
+
+Obtained ILS is then employed during RM and BM operators. Both are examples of the OM operator. The main idea of this operation is to change only one individual regarding a given mask and check the difference between the fitness value before and after the change. If the fitness value decreases then the change has to be reverted. Otherwise, when the fitness value remains the same or is greater after the genotype modification then the change is retained.
+\begin{algorithm}
+	\caption{The RM procedure}
+	\label{alg:restrictedMixing}
+	\begin{algorithmic}[1]
+		\State $ILS: \text{incremental linkage set, } M: \text{mask, } R: \text{receiver,}$
+		\State $f: \text{evaluation function, } P: \text{population, }$
+		\State $l: \text{problem size, } T: \text{trial solution}$
+		\State \text{$R_M:$ pattern of $R$ extracted by $M$}
+		\State \text{$R_{M^{'}}:$ complement pattern of $R_M$}
+		\State $\textbf{input: } R: \text{receiver, } P: \text{population}$
+		\State $\textbf{output: } R: \text{receiver, } M: \text{mask}$
+		\State $ILS \gets \text{the output of Algorithm~\ref{alg:ILS}}$
+		\For {$i \gets 1 \textbf{ to } \left \lfloor{l/2}\right \rfloor$}
+			\State $M \gets ILS_i$
+			\If {$R_{M^{'}} \subset P$}
+				\State $T \gets R$
+				\State \text{update $T$ with $R_{M^{'}}$}
+				\If {$f(T) \ge f(R)$}
+					\State $R \gets T$
+					\State $\textbf{return } (R, M)$
+				\EndIf
+			\EndIf
+		\EndFor
+		\State $\textbf{return } (R, \emptyset)$
+	\end{algorithmic}
+\end{algorithm}
+In the RM operator, a selected individual called receiver is being modified by one of possible ILSs that is chosen randomly. Masks, which are members of the selected ILS, are processed sequentially. Values of genes marked by a considered mask are flipped. After that, new values are checked if there is at least one individual in a population which has the same values of genes on positions marked by the mask. If the result of this operation namely supply check is positive and the fitness value of the receiver individual is equal or greater than before the modification then the receiver individual remains modified and the RM procedure terminates. Otherwise, the bit-flipping operations is reversed and the next mask is being processed. The RM procedure is presented in Algorithm~\ref{alg:restrictedMixing}, which is derived from~\cite{dsmga2e}.
+\begin{algorithm}
+	\caption{The BM procedure}
+	\label{alg:backMixing}
+	\begin{algorithmic}[1]
+		\State $M: \text{mask, } D: \text{donor, } P: \text{population, } f: \text{evaluation function,}$
+		\State $T: \text{trial solution, } E: \text{candidates,}$
+		\State $D_M: \text{pattern of $D$ extracted by $M$}$
+		\State $\textbf{input: } D: \text{donor, } M: \text{mask}$
+		\State $\textbf{output: } P: \text{population}$
+		\State $E \gets \emptyset$
+		\State $improved \gets false$
+		\For {$i \gets 1 \textbf{ to } |P|$}
+			\State $T \gets P_i$
+			\State \text{update $T$ with $D_M$}
+			\If {$f(T) > f(P_i)$}
+				\State $P_i \gets T$
+				\State $improved \gets true$
+			\Else
+				\If {$f(T) = f(P_i)$}
+					\State $E_i \gets T$
+				\Else
+					\State $E_i \gets P_i$
+				\EndIf
+			\EndIf
+		\EndFor
+		\If {$improved = false$}
+			\State $P \gets E$
+		\EndIf
+		\State $\textbf{return } P$
+	\end{algorithmic}
+\end{algorithm}
+If the receiver individual after the modification is accepted then the BM operator is performed and the receiver individual becomes the donor individual for other individuals in a population like in the typical OM operator~\cite{om}. The mask used during the mixing is the last considered mask while performing the RM operation. If during the BM operation there is no strict improvement in the fitness value of any individual in a population, all genotype modifications that result in the same fitness values are accepted. Otherwise, only strict improvement changes remain. The pseudo-code of the BM operation is adopted from~\cite{dsmga2e} and shown in Algoritm~\ref{alg:backMixing}.
+
+\subsection{Two-edge Dependency Structure Matrix Genetic Algorithm-II}
+
+In the original version of DSMGA-II, the process of finding the AMWCS uses DSM considered as a graph that has exactly one link between each pair of vertices which are simply genes indexes. This approach allows for general dependencies between genes i.e. mutual information is calculated for all possible values of genes. The two-edge linkage model proposed in Two-edge Dependency Structure Matrix Genetic Algorithm-II (DSMGA-IIe)~\cite{dsmga2e} takes dependencies between complementary patterns into account while finding AMWCS. 
+
+In this version of building ILS, the values of genes of selected to the RM operation individual are taken into consideration. Thus, DSM is divided into DSM$_{(00 \cup 11)}$ and DSM$_{(01 \cup 10)}$. The values of their entries are calculated using formula~(\ref{eq:mutualInformation0011}) and formula~(\ref{eq:mutualInformation0110}) respectively.
+\begin{equation}
+	\label{eq:mutualInformation0011}
+	\begin{aligned}
+		I_{(00 \cup 11)}(G_i, G_j) &= p_{i,j}(0, 0) \ln{\frac{p_{i,j}(0,0)}{p_i(0)p_j(0)}} 
+		\\& + p_{i,j}(1, 1) \ln{\frac{p_{i,j}(1,1)}{p_i(1)p_j(1)}}
+	\end{aligned}
+\end{equation}
+\begin{equation}
+	\label{eq:mutualInformation0110}
+	\begin{aligned}
+		I_{(01 \cup 10)}(G_i, G_j) &= p_{i,j}(0, 1) \ln{\frac{p_{i,j}(0,1)}{p_i(0)p_j(1)}} 
+		\\& + p_{i,j}(1, 0) \ln{\frac{p_{i,j}(1,0)}{p_i(1)p_j(0)}}
+	\end{aligned}
+\end{equation}
+Note that $I(G_i, G_j) = I_{(00 \cup 11)}(G_i, G_j) + I_{(01 \cup 10)}(G_i, G_j)$, so $\text{DSM} = \text{DSM}_{(00 \cup 11)} + \text{DSM}_{(01 \cup 10)}$ as well. Thus, a graph used to find AMWCS has two links between each pair of genes indexes. The value of the first edge is taken from DSM$_{(00 \cup 11)}$, whereas the other edge value is got from DSM$_{(01 \cup 10)}$. Nevertheless, while finding the vertex with max linkage using formula~(\ref{eq:maxLinkageTwoEdge}) only one link is considered depending on the receiver individual that takes part in the RM operation.
+\begin{equation}
+	\label{eq:maxLinkageTwoEdge}
+	v^*_{two\_edge} = \arg \max_{v \in V} \sum_{m \in M} L(G_v, G_m)
+\end{equation}
+
+\begin{equation}
+	L(G_i, G_j) = 
+	\begin{cases}
+		I_{(00 \cup 11)}(G_i, G_j), R_i = 0 \land R_j = 0 \lor R_i = 1 \land R_j = 1\\
+		I_{(01 \cup 10)}(G_i, G_j), R_i = 0 \land R_j = 1 \lor R_i = 1 \land R_j = 0\\
+	\end{cases}
+\end{equation}
+where $R_i$ is the $i^{th}$ gene value of the receiver individual.
+
+\subsection{Comparative Mixing}
+
+In the original version of DSMGA-II, all possible ILSs in a single method iteration are the same for all individuals in a population. This leads to obtaining the poor effectiveness while solving heavily overlapping problems~\cite{fp3}. Due to proposing the new way of creating ILS depending on individual, the recent DSMGA-II modification i.e. DSMGA-IIe improves this effectiveness. Unfortunately, in many cases its process of constructing the linkage model has to start from scratch, because the population diversity. This operation is time consuming, therefore, we propose the Comparative Mixing (CM) operator that extends the RM operator by filtering given ILS on the base of a randomly selected member from a population. Thus, during the single method iteration, distinct individuals may have different possible ILSs to use. We named the new version of DSMGA-II that uses the CM operator as Dependency Structure Matrix Genetic Algorithm-II with the Comparative Mixing operator (cDSMGA-II). The general cDSMGA-II procedure is presented in Algorithm~\ref{alg:cdsmga2}. The only difference in comparison to Algorithm~\ref{alg:dsmga2} is applying the CM operator instead of the RM operator.
+
+\begin{algorithm}
+	\caption{The general cDSMGA-II procedure}
+	\label{alg:cdsmga2}
+	\begin{algorithmic}[1]
+		\State $P: \text{population, } S: \text{selected population,}$
+		\State $s: \text{selection pressure, } R: \text{constant,}$
+		\State $DSM: \text{dependency structure matrix, } M: \text{mask}$
+		\State $\textbf{input: } l: \text{problem size, } p: \text{population size}$
+		\State $\textbf{output: } \text{best individual in } P$
+		\State $P \gets \text{PopulationInitialization($l, p$)}$
+		\State $P \gets \text{GHC($P$)}$
+		\While{$\neg \text{ShouldTerminate}$}
+		\State $S \gets \text{TournamentSelection($P, s$)}$
+		\State $DSM \gets \text{UpdateMatrix($S$)}$
+		\For {$k \gets 1 \textbf{ to } R$}
+		\State $I \gets \text{random permutation from $1$ to $p$}$
+		\For {$i \in I$}
+		\State $(P_i, M) \gets \text{ComparativeMixing($P_i$)}$
+		\If {$M \neq \emptyset$}
+		\State $P \gets \text{BackMixing($P_i, M$)}$
+		\EndIf
+		\EndFor
+		\EndFor
+		\EndWhile
+		\State $\textbf{return } \text{best inidividual in } P$
+	\end{algorithmic}
+\end{algorithm}
+
+At the beginning of the CM procedure regarding Algorithm~\ref{alg:comparativeMixing}, ILS must be constructed. This operation (Algorithm~\ref{alg:ILSForCM}) resembles filtering ILS obtained in the original way (Algorithm~\ref{alg:ILS}) and results in at most $\left \lfloor{l/2}\right \rfloor$ ILSs, where $l$ denotes a given problem size. The rest of the CM procedure is almost the same as in the RM operator. The only difference is that the length of ILS may be smaller than $\left \lfloor{l/2}\right \rfloor$.
+
+\begin{algorithm}
+	\caption{The ILS construction procedure for the CM operator}
+	\label{alg:ILSForCM}
+	\begin{algorithmic}[1]
+		\State $ILS: \text{incremental linkage set, } V: \text{candidate vertices set,}$
+		\State $M: \text{mask, } l: \text{problem size, } R: \text{receiver,}$
+		\State $P: \text{population, } C: \text{comparing solution}$
+		\State $\textbf{input: } R: \text{receiver}$
+		\State $\textbf{output: } ILS: \text{incremental linkage set}$
+		\State $ILS \gets \emptyset$
+		\State $M \gets []$
+		\State $V \gets \{1, 2, ..., l\}$
+		\State $v_c \gets \text{a random vertice in } V$
+		\State \text{add $v_c$ to $M$}
+		\State $C \gets \text{a random individual in $P$ different than $R$}$
+		\State $i \gets 2$
+		\While {$i \le \left \lfloor{l/2}\right \rfloor \textbf{ and } V \ne \emptyset$}
+			\State $v^* \gets \text{the vertex in $V$ with the max linkage}$
+			\If {$C_{v^*} = C_{v_c}$}
+				\If {$R_{v^*} = R_{v_c}$}
+					\State $\text{add $v^*$ to $M$}$
+					\State $ILS_i \gets M$
+					\State $i \gets i + 1$
+				\EndIf
+			\Else
+				\If {$R_{v^*} \ne R_{v_c}$}
+					\State $\text{add $v^*$ to $M$}$
+					\State $ILS_i \gets M$
+					\State $i \gets i + 1$
+				\EndIf
+			\EndIf
+			\State $V \gets V \setminus \{v^*\}$
+		\EndWhile
+	\end{algorithmic}
+\end{algorithm}
+
+\begin{algorithm}
+	\caption{The CM procedure}
+	\label{alg:comparativeMixing}
+	\begin{algorithmic}[1]
+		\State $ILS: \text{incremental linkage set, } M: \text{mask, } R: \text{receiver,}$
+		\State $f: \text{evaluation function, } P: \text{population, }$
+		\State $l: \text{problem size, } T: \text{trial solution}$
+		\State \text{$R_M:$ pattern of $R$ extracted by $M$}
+		\State \text{$R_{M^{'}}:$ complement pattern of $R_M$}
+		\State $\textbf{input: } R: \text{receiver}$
+		\State $\textbf{output: } R: \text{receiver, } M: \text{mask}$
+		\State $ILS \gets \text{the output of Algorithm~\ref{alg:ILSForCM} for } R$
+		\For {$i \gets 1 \textbf{ to } |ILS|$}
+			\State $M \gets ILS_i$
+			\If {$R_{M^{'}} \subset P$}
+				\State $T \gets R$
+				\State \text{update $T$ with $R_{M^{'}}$}
+				\If {$f(T) \ge f(R)$}
+					\State $R \gets T$
+					\State $\textbf{return } (R, M)$
+				\EndIf
+			\EndIf
+		\EndFor
+		\State $\textbf{return } (R, \emptyset)$
+	\end{algorithmic}
+\end{algorithm}
+
+The newly proposed ILS construction procedure requires two individuals: the receiver that is currently mixing using the RM operator and the comparing individual which is randomly selected from a population and has to be different than the receiver. During this operation, both the receiver and the comparing individual genes are compared to their reference gene marked by a gene index randomly selected in line 10 of Algorithm~\ref{alg:ILSForCM}. Assuming that the comparing individual contains the optimal values of a whole Building Block (BB), we would like to flip only these values of the receiver genes that does not match to the reference relation. This relation tells us if both values of the reference gene and the considered gene are the same or not. Let us consider the concatenation of three order-3 deceptive functions~\cite{decFunc}. When $111$ $111$ $010$ is the receiver individual, $111$ $000$ $111$ is the comparing individual, and the $7^{th}$ gene has been selected as the reference gene, we would like to obtain the following mask $\{7, 9\}$ to get the optimal solution. Thus, we consider all vertices ordered descending by the max linkage value until we obtain the mask of length $\left \lfloor{l/2}\right \rfloor$ or there is no more vertices to consider. Each candidate vertex is checked if the reference relation for the comparing individual is the same as for the receiver individual. If yes then the vertex will be a member of obtained ILS, otherwise it will not. Thanks to this filtering, even if a gene index should appear at the beginning of mask, it would be skipped, because it already has a proper value. 
+
+To clarify the ILS construction procedure for the CM operator, let us provide an example. We consider DSM given in Table~\ref{tab:DSM}, $111000$ as the receiver, $110111$ as the comparing individual, and the $3^{rd}$ gene as the reference gene. The obtained ILS will be as follows: $<$$\{3\}, \{3, 4\}, \{3, 4, 5\}$$>$.
+
+\section{Results}
+
+DSMGA-II, DSMGA-IIe, cDSMGA-II (population size 1000, 3000, 9000)
+
+4h stop condition
+
+20 powtorzen
+
+\subsection{Experiment Setup}
+
+Three competing methods are taken into account during the experiments: DSMGA-II, DSMGA-IIe, and P3. DSMGA-II and DSMGA-IIe were chosen, because they are predecessors of cDSMGA-II that is proposed in this paper. 
+
+Efficiency of all methods are tested using five different problem types on the base of~\cite{dsmga2,dsmga2e,p3}. First, concatenated trap function was chosen. In general, trap function~\cite{decFunc} is hard to optimize, because an optimizer is being deceived toward local optimum instead of looking for a global optima that is hard to find. Concatenated trap function consists of $m$ fully separable trap functions that may be considered as BBs. As in~\cite{dsmga2,dsmga2e} we defined $k$-order trap function as:
+\begin{equation}
+	\text{trap}(u) =
+	\begin{cases}
+		1 & , u = k \\
+		\frac{k - 1- u}{k} & , u \neq k \\
+	\end{cases}
+\end{equation}
+where $u$ denotes unitation i.e. the number of $1s$ in a genotype. During our experiments, we used $k = 5$ and $m \in \{100, 150, 200\}$. Thus, the sizes of considered problems were $500$, $750$, and $1000$ respectively. Another chosen problem is folded trap that may be known as bimodal trap~\cite{deceptive}. Folded trap has two global optima - first in $0s$, the other in $1s$ - and ${k}\choose{k/2}$ local optima, where $k$ denotes the trap size. In this paper, we used $k = 6$ and considered problems of sizes $\{498, 750, 1002\}$. Table~\ref{tab:trapFunction} presents the values of considered trap function.
+
+\begin{table}
+	\caption{Trap function ($k = 6$) values}
+	\label{tab:trapFunction}
+	\begin{tabular}{llllllll}
+		\toprule
+		\textbf{Unitation} & \textbf{0} & \textbf{1} & \textbf{2} & \textbf{3} & \textbf{4} & \textbf{5} & \textbf{6} \\
+		\midrule
+		\textbf{Function value} & 1.0 & 0.0 & 0.4 & 0.8 & 0.4 & 0.0 & 1.0 \\
+		\bottomrule
+	\end{tabular}
+\end{table}
+
+Problems which has been described above are fully separable. Our experiments we ran also on overlapping problems. In this type of problems, a single gene may be a member of a number of BBs. We checked effectiveness of considered methods using cyclic trap problems~\cite{cyclicTrap}. Cyclic trap of order $k$ is very similar to concatenated trap of the same order. Instead of separable trap functions, cyclic trap consists of overlapping trap functions with wraparound. Here, we used $k = 5$ and defined problems of sizes $\{500, 750, 1000\}$. We also considered Nearest Neighbor NK-landscapes. In this problem each gene is dependent on $k$ neighbors. Neighbors are defined as succeeding genes. To check how the chosen methods managed different level of overlapping, we used constant problem size equaled to $600$ and $k \in \{5, 6, 7\}$. The last problem used in our experiments was Ising Spin Glass that is the real world problem driven from statistical mechanics. In this problem, each gene in genotype represent spins of values $-1$ or $1$. Adjacent spins are linked by a coupling constant $J_{ij}$. Let us consider the following formula:
+\begin{equation}
+	- \sum_{i,j=0}^{l} x_i x_j J_{ij}
+\end{equation}
+where $x_i$ and $x_j$ denotes the $i^{th}$ and $j^{th}$ spin respectively. The problem size is defined by $l$. Our goal is to minimize this formula. While conducting experiments, we used $l \in\ \{529, 784, 1024\}$ and considered only $2D \pm J$ version of Ising Spin Glass. In this version, the coupling constant is equal to $-1$ or $1$ and each spin has four neighbors due to defining a neighborhood by $2D$ grid.
+
+\subsection{Main results}
+
+The main results are presented in Table~\ref{tab:mainResults}. Two measures are reported: the percentage of solved problems and the mean time needed to find the optimal solution. The general goal of proposing cDSMGA-II was to find such modification of DSMGA-II that will deal with heavily overlapping problems. As presented in Table~\ref{tab:mainResults}, cDSMGA-II is the only DSMGA-II-based method that can solve all ($k = 5$ or $k = 6$) or some ($k = 7$) NK-landscape instances. The drawback of proposed modification is that its efficiency is lower fo concatenated trap problems. 
+
+\begin{table*}
+	\caption{Main results}
+	\label{tab:mainResults}
+	\begin{tabular}{llllllllll}
+		\toprule
+		& & \multicolumn{2}{c}{\textbf{cDSMGA-II}} & \multicolumn{2}{c}{\textbf{DSMGA-II}} & \multicolumn{2}{c}{\textbf{DSMGA-IIe}} & \multicolumn{2}{c}{\textbf{P3}} \\
+		\textbf{Problem} & \textbf{\textit{l}} & \pbox{20cm}{\textbf{Solved} \\ \textbf{[\%]}} & \pbox{20cm}{\textbf{Time mean} \\ \textbf{[s]}} & \pbox{20cm}{\textbf{Solved} \\ \textbf{[\%]}} & \pbox{20cm}{\textbf{Time mean} \\ \textbf{[s]}} & \pbox{20cm}{\textbf{Solved} \\ \textbf{[\%]}} & \pbox{20cm}{\textbf{Time mean} \\ \textbf{[s]}} & \pbox{20cm}{\textbf{Solved} \\ \textbf{[\%]}} & \pbox{20cm}{\textbf{Time mean} \\ \textbf{[s]}} \\
+		\midrule
+		\textbf{NK-landscape ($k = 5$)} & 600 & \textbf{100} & 2697.0 & 20 & 12412.5 & 60 & 6340.0 & \textbf{100} & \textbf{827.0} \\
+		\textbf{NK-landscape ($k = 6$)} & 600 & \textbf{100} & 5242.0 & 0 & N/A & 0 & N/A & \textbf{100} & \textbf{3090.0} \\
+		\textbf{NK-landscape ($k = 7$)} & 600 & 50 & 11960.0 & 0 & N/A & 0 & N/A & \textbf{85} & \textbf{5745.0} \\
+		\textbf{2D Spin-glass} & 529 & \textbf{100} & 22.0 & \textbf{100} & 23.0 & \textbf{100} & 36.5 & \textbf{100} & \textbf{15.0} \\
+		\textbf{2D Spin-glass} & 784 & \textbf{100} & 64.0 & \textbf{100} & 53.0 & \textbf{100} & 114.0 & \textbf{100} & \textbf{45.0} \\
+		\textbf{2D Spin-glass} & 1024 & \textbf{100} & 161.0 & \textbf{100} & 124.0 & \textbf{100} & 431.0 & \textbf{100} & \textbf{114.0} \\
+		\textbf{Cyclic trap} & 500 & \textbf{100} & \textbf{2.0} & \textbf{100} & \textbf{2.0} & \textbf{100} & 4.0 & \textbf{100} & 12.0 \\
+		\textbf{Cyclic trap} & 750 & \textbf{100} & \textbf{48.0} & \textbf{100} & 80.5 & \textbf{100} & 4.0 & \textbf{100} & 153.5 \\
+		\textbf{Cyclic trap} & 1000 & \textbf{100} & \textbf{175.0} & \textbf{100} & 192.5 & 85 & 6516.0 & 85 & 627.0 \\
+		\textbf{Concatenated trap} & 500 & 90 & 5.0 & \textbf{100} & \textbf{4.0} & \textbf{100} & 14.0 & \textbf{100} & 6.0 \\
+		\textbf{Concatenated trap} & 750 & 95 & 34.0 & \textbf{100} & \textbf{4.0} & \textbf{100} & 44.5 & \textbf{100} & 13.5 \\
+		\textbf{Concatenated trap} & 1000 & \textbf{100} & 24.0 & \textbf{100} & \textbf{9.5} & \textbf{100} & 127.5 & \textbf{100} & 26.0 \\
+		\textbf{Folded trap} & 498 & \textbf{100} & 4.0 & \textbf{100} & \textbf{3.0} & \textbf{100} & 70.0 & \textbf{100} & 751.0 \\
+		\textbf{Folded trap} & 750 & \textbf{100} & \textbf{12.5} & \textbf{100} & \textbf{12.5} & \textbf{100} & 383.5 & \textbf{100} & 2331.0 \\
+		\textbf{Folded trap} & 1002 & \textbf{100} & 30.5 & \textbf{100} & \textbf{22.0} & \textbf{100} & 987.0 & \textbf{100} & 4573.0 \\
+		\bottomrule
+	\end{tabular}
+\end{table*} 
+
+\begin{table}
+	\caption{The sumarized number of problems that were solved in all, some, or none of the experiments}
+	\label{tab:numberOfSolvedProblems}
+	\begin{tabular}{lllll}
+		\toprule
+		\pbox{20cm}{\textbf{Optimal} \\ \textbf{solutions} \\ \textbf{found}} & \textbf{cDSMGA-II} & \textbf{DSMGA-II} & \textbf{DSMGA-IIe} & \textbf{P3} \\
+		\midrule
+		\textbf{All} & 12 & 12 & 11 & \textbf{13} \\
+		\textbf{Some} & 3 & \textbf{1} & 2 & 2 \\
+		\textbf{None} & \textbf{0} & 2 & 2 & \textbf{0} \\
+		\bottomrule
+	\end{tabular}
+\end{table}
+
+\begin{acks}
+	Acks
+\end{acks}
